@@ -5,37 +5,38 @@ resource "aws_alb" "alb" {
   security_groups       = [aws_security_group.web_access.id]
 }
 
-#Add LB listeners - HTTP/HTTPS
-resource "aws_alb_listener" "listener_http" {
+#HTTP Listener
+resource "aws_alb_listener" "alb_listener_http" {
   load_balancer_arn = aws_alb.alb.arn
   port              = 8080
   protocol          = "HTTP"
   
   default_action {
-    target_group_arn = aws_alb_target_group.alb_target_group.arn
+    target_group_arn = aws_alb_target_group.alb_target_group_http.arn
     type             = "forward"
   }
 }
-resource "aws_alb_listener" "alb_listener" {  
+#HTTPS Listener
+resource "aws_alb_listener" "alb_listener_https" {  
   load_balancer_arn = aws_alb.alb.arn  
   port              = 443
   protocol          = "HTTPS"
   #AWS certificate
-  certificate_arn   = "arn:aws:acm:us-east-2:999329133891:certificate/391784a9-c098-42e4-9aaa-cf77ec425fd8"
+  certificate_arn   = file(var.cert)
   
   default_action {    
-    target_group_arn = aws_alb_target_group.alb_target_group.arn
+    target_group_arn = aws_alb_target_group.alb_target_group_http.arn
     type             = "forward"  
   }
 }
 
 #Forward request to port 8080
-resource "aws_alb_listener_rule" "listener_rule" {
-  listener_arn = aws_alb_listener.alb_listener.arn
+resource "aws_alb_listener_rule" "listener_rule_http" {
+  listener_arn = aws_alb_listener.alb_listener_https.arn
   
   action {    
     type             = "forward"    
-    target_group_arn = aws_alb_target_group.alb_target_group.id
+    target_group_arn = aws_alb_target_group.alb_target_group_http.id
   }   
   
   condition {
@@ -44,8 +45,10 @@ resource "aws_alb_listener_rule" "listener_rule" {
     }
   }
 }
-resource "aws_alb_target_group" "alb_target_group" {  
-  name     = "target-group"
+
+#HTTP target group - port 8080
+resource "aws_alb_target_group" "alb_target_group_http" {  
+  name     = "target-group-http"
   port     = 8080
   protocol = "HTTP"  
   vpc_id   = aws_vpc.vpc.id
@@ -60,14 +63,20 @@ resource "aws_alb_target_group" "alb_target_group" {
   }
 }
 
-#Attach instances to target group
-resource "aws_lb_target_group_attachment" "attach0" {
-  target_group_arn = aws_alb_target_group.alb_target_group.arn
-  target_id        = aws_instance.web_a.id
+#Attach Apache instances to HTTP target group
+resource "aws_lb_target_group_attachment" "attach_web_a" {
+
+  count = var.instance_count
+  target_group_arn = aws_alb_target_group.alb_target_group_http.arn
+  #target_id        = aws_instance.web_a.id
+  target_id        = data.aws_instances.web_instances_a.ids[count.index]
   port             = 8080
 }
-resource "aws_lb_target_group_attachment" "attach1" {
-  target_group_arn = aws_alb_target_group.alb_target_group.arn
-  target_id        = aws_instance.web_b.id
+resource "aws_lb_target_group_attachment" "attach_web_b" {
+
+  count = var.instance_count
+  target_group_arn = aws_alb_target_group.alb_target_group_http.arn
+  #target_id        = aws_instance.web_b.id
+  target_id        = data.aws_instances.web_instances_b.ids[count.index]
   port             = 8080
 }

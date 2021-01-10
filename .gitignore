@@ -1,0 +1,3 @@
+.terraform/plugins/linux_amd64/terraform-provider-aws_v3.23.0_x5
+.terraform/plugins/linux_amd64/lock.json
+certificates/aws_acm.txt

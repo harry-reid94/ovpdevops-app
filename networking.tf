@@ -42,3 +42,8 @@ resource "aws_subnet" "subnet_prom_az_b" {
     availability_zone       = var.az_b
     map_public_ip_on_launch = true
 }
+
+#Stores list of valid subnets within VPC CIDR block
+data "aws_subnet_ids" "dynamic_subnets_list" {
+  vpc_id = aws_vpc.vpc.id
+}

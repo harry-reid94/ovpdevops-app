@@ -16,16 +16,19 @@ variable ami {
 }
 variable instance {
   description   = "Type of EC2 instance"
-  default       = "t2.nano"
+  default       = "t2.micro"
 }
-
 
 #Ansible user
 variable ansible_user {
   description   = "Ansible user"
   default       = "ec2-user"
 }
-
+#Ubuntu user
+variable ubuntu_user {
+  description   = "Ubuntu user"
+  default       = "ubuntu"
+}
 
 #Keychain
 variable public_key {
@@ -41,11 +44,7 @@ variable private_key {
 #Certificates
 variable cert {
   description   = "SSL Certificate"
-  default       = "~/ovp_devops_app_2/aws/certificates/openssl.csr"
-}
-variable cert_key {
-  description   = "SSL Key"
-  default       = "~/ovp_devops_app_2/aws/certificates/openssl.key"
+  default       = "~/ovp_devops_app/ovp_devops_app/certificates/aws_acm.txt"
 }
 
 

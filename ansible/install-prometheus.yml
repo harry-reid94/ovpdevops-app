@@ -1,7 +1,7 @@
 - hosts: all
   become: true
   tasks:
-    - name: installa dipendenze
+    - name: install dependencies
       apt:
         name: "{{item}}"
         state: present
@@ -12,15 +12,15 @@
         - curl
         - gnupg-agent
         - software-properties-common
-    - name: aggiungi chiave GPG
+    - name: Add GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
-    - name: aggiungi repository docker
+    - name: Add Docker repositoru
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu bionic stable
         state: present
-    - name: installa docker
+    - name: Install Docker
       apt:
         name: "{{item}}"
         state: latest
@@ -29,9 +29,23 @@
         - docker-ce
         - docker-ce-cli
         - containerd.io
-    - name: assicurati che docker sia attivo
+    - name: Start Docker
       service:
         name: docker
         state: started
         enabled: yes
-
+    - name: Create Prometheus directory
+      file:
+        path: /prometheus-data
+        state: directory
+      become: yes
+    - name: Move directory contents
+      command: sudo cp -r /tmp/prometheus.yml /prometheus-data/.
+    - name: Append access key to Prometheus config file
+      command: sudo sed -i 's;<access_key>;{{prometheus_access_key}};g' /prometheus-data/prometheus.yml
+    - name: Append access secret to Prometheus config file
+      command: sudo sed -i 's;<secret_key>;{{prometheus_access_secret}};g' /prometheus-data/prometheus.yml
+    - name: Start Prometheus container
+      command: sudo docker run -d -p 9090:9090 --name=prometheus -v /prometheus-data/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+    - name: Start Grafana container
+      command: sudo docker run -d -p 3000:3000 --name=grafana grafana/grafana
