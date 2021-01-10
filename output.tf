@@ -23,6 +23,11 @@ output "Instance_IPs_b" {
   value = data.aws_instances.web_instances_b.public_ips
 }
 */
-output "Subnets" {
-  value = data.aws_subnet_ids.dynamic_subnets_list
+/*
+output "Subnets_public" {
+  value = data.aws_subnet_ids.dynamic_subnets_list_public
 }
+
+output "Subnets_private" {
+  value = data.aws_subnet_ids.dynamic_subnets_list_private
+}*/

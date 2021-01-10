@@ -5,13 +5,16 @@ resource "aws_instance" "web_a" {
 
     ami           = var.ami
     instance_type = var.instance
-	key_name = aws_key_pair.ovpDevOpsKey.id
+  	key_name = aws_key_pair.ovpDevOpsKey.id
     availability_zone = var.az_a
+    associate_public_ip_address = true
 
     #Dynamic subnet assignment
-    subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
+    #subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
 
-    vpc_security_group_ids = [aws_security_group.internal_access.id,aws_security_group.web_access.id, aws_security_group.prometheus_access.id]
+    subnet_id = aws_subnet.subnet_private_az_a.id
+
+    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.prometheus_access.id]
 
 
     tags = {
@@ -43,13 +46,16 @@ resource "aws_instance" "web_b" {
 
     ami           = var.ami
     instance_type = var.instance
-	key_name      = aws_key_pair.ovpDevOpsKey.id
+	  key_name      = aws_key_pair.ovpDevOpsKey.id
     availability_zone = var.az_b
+    associate_public_ip_address = true
 
-    vpc_security_group_ids = [aws_security_group.internal_access.id,aws_security_group.web_access.id, aws_security_group.prometheus_access.id]
+    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.prometheus_access.id]
 
     #Dynamic subnet assignment
-    subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
+    #subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
+
+    subnet_id = aws_subnet.subnet_private_az_b.id
 
     tags = {
         Role = "WebServer"
@@ -74,7 +80,7 @@ resource "aws_instance" "web_b" {
     }
 }
 
-//Stores web servers to attach to ALB - a
+#Stores web servers to attach to ALB - a
 data "aws_instances" "web_instances_a" {
   
   instance_state_names = ["running"]
@@ -86,7 +92,7 @@ data "aws_instances" "web_instances_a" {
   ]
 }
 
-//Stores web servers to attach to ALB - b
+#Stores web servers to attach to ALB - b
 data "aws_instances" "web_instances_b" {
 
   instance_state_names = ["running"]

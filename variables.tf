@@ -51,24 +51,25 @@ variable cert {
 #CIDR & subnets
 variable cidr_vpc {
   description   = "CIDR for our VPC"
-  default       = "172.16.0.0/16"
+  default       = "10.0.0.0/16"
 }
-variable "cidr_subnet_a" {
+variable "cidr_subnet_public_a" {
     description = "CIDR block for the public facing subnet."
-    default     = "172.16.64.0/24"
+    default     = "10.0.128.0/20"
 }
-variable "cidr_subnet_b" {
+variable "cidr_subnet_public_b" {
     description = "CIDR block for the public facing subnet."
-    default     = "172.16.128.0/24"
+    default     = "10.0.144.0/20"
 }
-variable "cidr_subnet_prom_a" {
-    description = "CIDR block for the public facing subnet."
-    default     = "172.16.16.0/24"
+variable "cidr_subnet_private_a" {
+    description = "CIDR block for the private facing subnet."
+    default     = "10.0.0.0/19"
 }
-variable "cidr_subnet_prom_b" {
-    description = "CIDR block for the public facing subnet."
-    default     = "172.16.32.0/24"
+variable "cidr_subnet_private_b" {
+    description = "CIDR block for the private facing subnet."
+    default     = "10.0.32.0/19"
 }
+
 
 
 #Availability zones

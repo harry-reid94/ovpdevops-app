@@ -1,7 +1,7 @@
 #Create Application LB
 resource "aws_alb" "alb" {  
   name                  = "alb"
-  subnets               = [aws_subnet.subnet_az_a.id, aws_subnet.subnet_az_b.id]
+  subnets               = [aws_subnet.subnet_public_az_a.id, aws_subnet.subnet_public_az_b.id]
   security_groups       = [aws_security_group.web_access.id]
 }
 

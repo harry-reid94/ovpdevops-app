@@ -4,7 +4,7 @@ resource "aws_instance" "prometheus_a" {
   ami               = "ami-0dd9f0e7df0f0a138"
   instance_type     = var.instance
   key_name               = aws_key_pair.ovpDevOpsKey.id
-  subnet_id              = aws_subnet.subnet_prom_az_a.id
+  subnet_id              = aws_subnet.subnet_public_az_a.id
 
   vpc_security_group_ids = [aws_security_group.prometheus_access.id]
 
@@ -49,7 +49,7 @@ resource "aws_instance" "prometheus_b" {
   ami               = "ami-0dd9f0e7df0f0a138"
   instance_type     = var.instance
   key_name               = aws_key_pair.ovpDevOpsKey.id
-  subnet_id              = aws_subnet.subnet_prom_az_b.id
+  subnet_id              = aws_subnet.subnet_public_az_b.id
 
   vpc_security_group_ids = [aws_security_group.prometheus_access.id]
 
