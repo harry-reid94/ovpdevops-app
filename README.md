@@ -35,14 +35,26 @@ For this assignment, we will create a public subnet in each AZ. Each subnet will
 #### Internet Gateways
 Internet gateway allows communication between the elements within our VPC and the internet. Traffic is routed from IGW to subnets via routing tables which declare routing logic. A route table association then maps this behaviour to the desired subnets.
 
+#### Security Groups
+Security groups are our virtual firewall to control inbound and outbound traffic to our instances. For this assignment we will need three security groups:
+- Web access: 
 #### EC2 Instances
 EC2 instances are Linux VMs and are where our web servers will live. Without an auto-scaling group EC2 instances must be statically assigned across AZs, so we will declare two resources - one in each subnet/AZ. For each resource we can have multiple instances. This fact, along with having multiple AZs and the function of our load balancer is how we acheive high availability. 
 
 #### Load Balancers
-For this assignment, an ALB (Application Load Balancer) is the best pick. A NLB (Network Load Balancer) could not assure availability of our application, and an ELB (Elastic Load Balancer) does not support port forwarding (443 -> 8080) - it is static. The load balancer will be assigned to both subnets so it can communicate with every instance.
+For this solution, an ALB (Application Load Balancer) is the best pick. A NLB (Network Load Balancer) could not assure availability of our application, and an ELB (Elastic Load Balancer) does not support port forwarding (443 -> 8080) - it is static. <br />
+The ALB requires several additional elements to function correctly, the first being a listener. This listens for incoming traffic on a specified port, which gets forwarded to a specified target group based on listener rules. A target group attachment resource attaches any desired instances to a target group. In our case the listener listens on port 443 and forwards over port 8080 to our target group members (web servers instances). <br />
+Health checks on each instance are performed to determine which route the traffic is directed. If an instance or AZ is down, the ALB will mark the target as unhealthy and discontinue traffic.
 
+#### Route 53
+Route 53 routes requests directed at our custom domain to our ALB. Initially a hosted zone will be created, which can then be updated with records containing mapping logic. <br />
+<br />
+- A Record: www.ovpdevops.xyz --> ALB hostname <br />
+- A Record: ovpdevops.xyz     --> ALB hostname <br />
+<br />
+Allows users to access the server with or without prefix. <br />
 
-#### Security Groups
+**NOTE: ** For this exercise, our custom domain has been registered outside of AWS, therefore we must get name servers from auto generated NS record on creation of hosted zone and import to custom domain provider for DNS propagation.
 
 ## Provisioning
 
