@@ -20,7 +20,7 @@ Home assignment for OVP DevOps team.
 -	AWS account & AWS CLI
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
-## Proposed Solution | High Level Design
+## High Level Design
 There are a quite a few moving parts to consider when creating a designing a solution of this nature, especially since we are following an Infrastructue as Code approach.
 Each element will be constructed as a (or collection of) Terraform modules. The main elements are:
 #### VPC
