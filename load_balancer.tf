@@ -56,9 +56,8 @@ resource "aws_alb_target_group" "alb_target_group_http" {
   stickiness {    
     type            = "lb_cookie"    
   }   
-  
+  //Check health of target instances
   health_check {
-    path = "/login"
     port = 8080
   }
 }
