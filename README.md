@@ -21,7 +21,7 @@ Home assignment for OVP DevOps team.
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
 ## High Level Design
-There are a quite a few moving parts to consider when creating a designing a solution of this nature, especially since we are following an Infrastructue as Code approach.
+There are a quite a few moving parts to consider when creating a design a solution of this nature, especially since we are following an Infrastructue as Code approach.
 Each element will be constructed as a (or collection of) Terraform modules. The main elements are:
 #### VPC
 A Virtual Private Cloud that will host our environment. It will also determine what our subnet ranges will be based on the specified CIDR block.
@@ -30,17 +30,19 @@ A Virtual Private Cloud that will host our environment. It will also determine w
 Each AWS region comes with several availability zones. We will deploy EC2 instance(s) containing our web service in each AZ. This provides **geo-resilience** and hence improves the services availability.
 
 #### Subnets
-Ideally we will have two
+Ideally we will have two subnets per AZ. One subnet will be a public subnet (routes to internet gateway) for 
 
 #### Internet Gateways
 #### EC2 Instances
+
 #### Load Balancers
 #### Security Groups
-#### Availability Zones
 
 ## Provisioning
 
 ## Deploying
+
+
 
 
 Separation of concerns - directory structure
