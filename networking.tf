@@ -46,18 +46,17 @@ resource "aws_subnet" "subnet_public_az_b" {
     map_public_ip_on_launch = true
 }
 
-#Create subnets for each availability zone - Private
-resource "aws_subnet" "subnet_private_az_a" {
-    vpc_id                  = aws_vpc.vpc.id
-    cidr_block              = var.cidr_subnet_private_a
-    availability_zone       = var.az_a
-    map_public_ip_on_launch = true
-}
-resource "aws_subnet" "subnet_private_az_b" {
-    vpc_id                  = aws_vpc.vpc.id
-    cidr_block              = var.cidr_subnet_private_b
-    availability_zone       = var.az_b
-}
+# #Create subnets for each availability zone - Private
+# resource "aws_subnet" "subnet_private_az_a" {
+#     vpc_id                  = aws_vpc.vpc.id
+#     cidr_block              = var.cidr_subnet_private_a
+#     availability_zone       = var.az_a
+# }
+# resource "aws_subnet" "subnet_private_az_b" {
+#     vpc_id                  = aws_vpc.vpc.id
+#     cidr_block              = var.cidr_subnet_private_b
+#     availability_zone       = var.az_b
+# }
 
 #Route table so public-a and public-b subnet can be assigned to this route table
 resource "aws_route_table" "internet_access" {

@@ -39,9 +39,6 @@ variable private_key {
   description   = "Private SSH key"
   default       = "~/.ssh/MyKeyPair.pem"
 }
-
-
-#Certificates
 variable cert {
   description   = "SSL Certificate"
   default       = "~/ovp_devops_app/ovp_devops_app/certificates/aws_acm.txt"

@@ -15,6 +15,12 @@ output "Prometheus_URL" {
   value = "http://${aws_instance.prometheus_a.public_ip}:9090"
 }
 
+output "LB-target-group-assocation-A" {
+  value = aws_lb_target_group_attachment.attach_web_a
+}
+output "LB-target-group-assocation-B" {
+  value = aws_lb_target_group_attachment.attach_web_b
+}
 /*
 output "Instance_IPs_a" {
   value = data.aws_instances.web_instances_a.public_ips
