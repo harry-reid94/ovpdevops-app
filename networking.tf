@@ -1,43 +1,38 @@
-#Create Virtual Private Cloud
+#VPC
 resource "aws_vpc" "vpc" {
     cidr_block = var.cidr_vpc
 }
 
-#Internet gateway for public access
+#Internet gateway
 resource "aws_internet_gateway" "gw" {
     vpc_id = aws_vpc.vpc.id
 }
 
-/*
-resource "aws_nat_gateway" "ngw_a" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.example.id
-
-  tags = {
-    Name = "gw NAT"
-  }
-  depends_on = [aws_internet_gateway.gw]
-}
-
-resource "aws_nat_gateway" "ngw_b" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.example.id
-
-  tags = {
-    Name = "gw NAT"
-  }
-  depends_on = [aws_internet_gateway.gw]
-}
-*/
+# #NAT gateway
+# resource "aws_nat_gateway" "ngw_a" {
+#   allocation_id = aws_eip.ngw_eip_a.id
+#   subnet_id     = aws_subnet.subnet_public_az_a.id
+#   depends_on = [aws_internet_gateway.gw]
+# }
+# resource "aws_eip" "ngw_eip_a" {
+#   vpc = true
+# }
 
 #Route table
 resource "aws_route" "internet_access" {
-    route_table_id         = aws_vpc.vpc.main_route_table_id
+    route_table_id         = aws_route_table.internet_access.id 
     destination_cidr_block = "0.0.0.0/0"
     gateway_id             = aws_internet_gateway.gw.id
 }
 
-#Create subnets for each availability zone
+# resource "aws_route" "ngw_a" {
+#   route_table_id = aws_route_table.ngw_a.id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id = aws_nat_gateway.ngw_a.id
+# }
+
+
+#Create subnets for each availability zone - Public
 resource "aws_subnet" "subnet_public_az_a" {
     vpc_id                  = aws_vpc.vpc.id
     cidr_block              = var.cidr_subnet_public_a
@@ -51,11 +46,12 @@ resource "aws_subnet" "subnet_public_az_b" {
     map_public_ip_on_launch = true
 }
 
-#Create subnets for each availability zone
+#Create subnets for each availability zone - Private
 resource "aws_subnet" "subnet_private_az_a" {
     vpc_id                  = aws_vpc.vpc.id
     cidr_block              = var.cidr_subnet_private_a
     availability_zone       = var.az_a
+    map_public_ip_on_launch = true
 }
 resource "aws_subnet" "subnet_private_az_b" {
     vpc_id                  = aws_vpc.vpc.id
@@ -63,19 +59,38 @@ resource "aws_subnet" "subnet_private_az_b" {
     availability_zone       = var.az_b
 }
 
-/*
-#Stores list of valid subnets within VPC CIDR block - Public
-data "aws_subnet_ids" "dynamic_subnets_list" {
-  vpc_id = aws_vpc.vpc.id
-}
-*/
-/*
-#Stores list of valid subnets within VPC CIDR block - Private
-data "aws_subnet_ids" "dynamic_subnets_list_private" {
+#Route table so public-a and public-b subnet can be assigned to this route table
+resource "aws_route_table" "internet_access" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-      Tier = "Private"
+    Name        = "ovpdevops-public-routetable"
   }
+  depends_on = [aws_vpc.vpc]
 }
 
-*/
+
+# #Route table NGW
+# resource "aws_route_table" "ngw_a" {
+#   vpc_id = aws_vpc.vpc.id
+#   tags = {
+#     Name        = "ovpdevops-public-routetable"
+#   }
+#   depends_on = [aws_vpc.vpc]
+# }
+
+
+resource "aws_route_table_association" "association_a" {
+  subnet_id      = aws_subnet.subnet_public_az_a.id
+  route_table_id = aws_route_table.internet_access.id
+  
+}
+resource "aws_route_table_association" "association_b" {
+  subnet_id      = aws_subnet.subnet_public_az_b.id
+  route_table_id = aws_route_table.internet_access.id
+}
+
+
+# resource "aws_route_table_association" "association_private_a" {
+#   subnet_id      = aws_subnet.subnet_private_az_a.id
+#   route_table_id = aws_route_table.ngw_a.id
+# }

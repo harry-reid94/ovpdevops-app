@@ -1,4 +1,4 @@
-#Define the EC2 instance
+#Define the EC2 instance - Web server A
 resource "aws_instance" "web_a" {
 
     count = var.instance_count
@@ -12,15 +12,16 @@ resource "aws_instance" "web_a" {
     #Dynamic subnet assignment
     #subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
 
-    subnet_id = aws_subnet.subnet_private_az_a.id
+    subnet_id = aws_subnet.subnet_public_az_a.id
 
-    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.prometheus_access.id]
+    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.web_access.id, aws_security_group.prometheus_access.id]
 
 
     tags = {
         Role = "WebServer"
     }
 
+  
     #Install Python on remote instance - Ansible needs it!
     provisioner "remote-exec" {
         inline = ["sudo yum -y install python3"]
@@ -33,13 +34,15 @@ resource "aws_instance" "web_a" {
             private_key = file(var.private_key)
         }
     }
+    
 
     #Run Ansible playbook on localhost to install Apache on remote instance
     provisioner "local-exec" {
         command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ${var.private_key} -i ${self.public_ip}, ansible/install-apache.yml"
     }
+    #depends_on = [aws_nat_gateway.ngw_a]
 }
-#Define the EC2 instance
+#Define the EC2 instance - Web server B
 resource "aws_instance" "web_b" {
 
     count = var.instance_count
@@ -50,12 +53,12 @@ resource "aws_instance" "web_b" {
     availability_zone = var.az_b
     associate_public_ip_address = true
 
-    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.prometheus_access.id]
+    vpc_security_group_ids = [aws_security_group.internal_access.id, aws_security_group.web_access.id, aws_security_group.prometheus_access.id]
 
     #Dynamic subnet assignment
     #subnet_id = sort(data.aws_subnet_ids.dynamic_subnets_list.ids)[count.index]
 
-    subnet_id = aws_subnet.subnet_private_az_b.id
+    subnet_id = aws_subnet.subnet_public_az_b.id
 
     tags = {
         Role = "WebServer"
