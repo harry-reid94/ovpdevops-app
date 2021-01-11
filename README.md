@@ -42,6 +42,7 @@ Ideally we will have two subnets per AZ. One subnet will be a public subnet (rou
 
 ## Deploying
 
+![alt text](https://github.com/harry-reid94/ovpdevops-app/blob/main/images/ovpdevopshld.jpg)
 
 
 
