@@ -4,3 +4,5 @@ certificates/aws_acm.txt
 terraform.tfstate
 terraform.tfstate.backup
 prometheus_iam.tf
+terraform.tfstate
+terraform.tfstate.backup
