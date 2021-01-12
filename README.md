@@ -22,8 +22,11 @@ Home assignment for OVP DevOps team.
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
 ### Link to Website
-- [www.ovpdevops.xyz](https://www.ovpdevops.xyz/)
-- Prometheus & Grafana - availabile on request (IP address subject to change)
+- [ovpdevops web server](https://www.ovpdevops.xyz/)
+- [Prometheus](3.21.97.192:9090)
+- [Grafana](3.21.97.192:3000)
+
+**NOTE:** EC2 instances are currently in a stopped state. Please ping me to have them instantiated in order to view the above webpages.
 <br />
 
 ## Proposed Solution
@@ -122,6 +125,7 @@ From the output, take your four name servers and upload them to your domain prov
 - Database should be attached to web server instances somehow. What is best practice here? And how do DBs in different AZs communicate/share data?
 - Auto-scaling.
 - Refactor Prometheus Ansible script to utilize ansible modules more rather than just running shell commands.
+- Load balancer on top of Prometheus instances - currently each instance has a public IP, not necessary!
 - Another possible solution would be to create ECS cluster, and deploy the web server into containers within the ECS cluster.
 
 ## Appendix
