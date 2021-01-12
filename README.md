@@ -21,7 +21,7 @@ Home assignment for OVP DevOps team.
 -  Set of public/private SSH keys
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
-### Link to Website
+### Links
 - [Web server](https://www.ovpdevops.xyz/)
 - Prometheus - subject to change, please request address
 - Grafana - subject to change, please request address.
