@@ -107,7 +107,7 @@ terraform init
 terraform plan
 terraform apply
 ```
-From the output, take your four name servers and upload them to your domain provider and wait for several hours for propagation. The Apache web server should then be available at `https://<domain>.<extension>` or `https://<www.domain>.<extension>`. 
+From the output, take your four name servers and upload them to your domain provider and wait for DNS propagation (can take up to 72 hours). The Apache web server should then be available at `https://<domain>.<extension>` or `https://<www.domain>.<extension>`. 
 
 ## Considerations
 1. **Monitoring:** Included in solution
