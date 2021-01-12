@@ -76,7 +76,7 @@ Security groups are our virtual firewall to control inbound and outbound traffic
   - Ingress: 22
   - Egress: All
 - Prometheus access - for all instances:
-  - Ingress: 9100
+  - Ingress: 3000, 9090, 9100
   - Egress: All
   
 #### Route 53
