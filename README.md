@@ -116,7 +116,7 @@ From the output, take your four name servers and upload them to your domain prov
 4. **Deploying to an existing environment:** Pull the current environment from Git and build on top of it. Or build the new environment in a different region if the two environments are to be kept separate.
 
 ## Areas of Improvement
-- The web servers should be hosted in private subnets. The servers then communicate with the internet via NAT gateways in public subnets. This is considered best practice and improves security. My attempt to create this architecture failed as I could not SSH via provisioner into the instances (in private subnets) to run Ansible playbooks etc.
+- The web servers should be hosted in private subnets i.e.cannot receive traffic directly from the IGW. The servers then communicate with the internet via NAT gateways in public subnets. This is considered best practice and improves security. My attempt to create this architecture failed as I could not SSH via provisioner into the instances (in private subnets) to run Ansible playbooks etc.
 - All provisioner steps in Prometheus instance creation (file transfer, remote-exec and local-exec) can be performed using one Ansible playbook (I think). Would improve maintainability.
 - Running Docker within an EC2 instance is probably not considered best practice. Maybe better to run prometheus on ECS?
 - Database should be attached to web server instances somehow. What is best practice here? And how do DBs in different AZs communicate/share data?
