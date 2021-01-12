@@ -10,7 +10,7 @@ Home assignment for OVP DevOps team.
    - Maintainability
    - Capacity
    - Growth
-   - Deploying an environment that already has instances running
+   - Deploying to an environment that already has instances running
 
 ### Prerequisites
 - Python 2.7
