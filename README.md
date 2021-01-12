@@ -10,7 +10,7 @@ Home assignment for OVP DevOps team.
    - Maintainability
    - Capacity
    - Growth
-   - Deploying to an environment that already has instances running
+   - Deploying to an environment that already has instances running.
 
 ### Prerequisites
 - Python 2.7
@@ -23,7 +23,7 @@ Home assignment for OVP DevOps team.
 
 ### Link to Website
 - [Web server](https://www.ovpdevops.xyz/)
-- Prometheus - subject to change, please request address.
+- Prometheus - subject to change, please request address
 - Grafana - subject to change, please request address.
 
 **NOTE:** EC2 instances are currently in a stopped state. Please ping me to have them instantiated in order to view the above webpages.
