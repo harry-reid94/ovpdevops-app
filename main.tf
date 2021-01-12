@@ -36,7 +36,7 @@ resource "aws_instance" "web_a" {
 
     #Run Ansible playbook on localhost to install Apache on remote instance
     provisioner "local-exec" {
-        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ${var.private_key} -i ${self.public_ip}, ansible/install-apache.yml"
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ${var.private_key} -i ${self.public_ip}, ansible/apache-playbook.yml"
     }
     #depends_on = [aws_nat_gateway.ngw_a]
 }
@@ -78,7 +78,7 @@ resource "aws_instance" "web_b" {
 
     #Run Ansible playbook on localhost to install Apache on remote instance
     provisioner "local-exec" {
-        command         = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ${var.private_key} -i ${self.public_ip}, ansible/install-apache.yml"
+        command         = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ec2-user --private-key ${var.private_key} -i ${self.public_ip}, ansible/apache-playbook.yml"
     }
 }
 
