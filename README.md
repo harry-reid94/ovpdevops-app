@@ -119,14 +119,13 @@ From the output, take your four name servers and upload them to your domain prov
 4. **Deploying to an existing environment:** Pull the current environment from Git and build on top of it. Or build the new environment in a different region if the two environments are to be kept separate.
 
 ## Areas of Improvement
-- The web servers should be hosted in private subnets i.e.cannot receive traffic directly from the IGW. The servers then communicate with the internet via NAT gateways in public subnets. This is considered best practice and improves security. My attempt to create this architecture failed as I could not SSH via provisioner into the instances (in private subnets) to run Ansible playbooks etc.
-- All provisioner steps in Prometheus instance creation (file transfer, remote-exec and local-exec) can be performed using one Ansible playbook (I think). Would improve maintainability.
-- Running Docker within an EC2 instance is probably not considered best practice. Maybe better to run prometheus on ECS?
+- The web servers should be hosted in private subnets i.e.cannot receive traffic directly from the IGW. The servers then communicate with the internet via NAT gateways in public subnets. This is considered best practice and improves security. My attempt to create this architecture failed as I could not SSH via provisioner into the instances (in private subnets) to run Ansible playbooks etc. I think i need a Bastion for this?
+- All provisioner steps in Prometheus instance creation (file transfer, remote-exec and local-exec) can probably be performed using one Ansible playbook. Would improve maintainability.
 - Database should be attached to web server instances somehow. What is best practice here? And how do DBs in different AZs communicate/share data?
-- Auto-scaling.
-- Refactor Prometheus Ansible script to utilize ansible modules more rather than just running shell commands.
+- Auto-scaling. Can provision instances across multiple availability zones using auto-scaling groups - improve maintainability! Also benefit from aformementioned capacity/growth functionality.
+- Refactor Prometheus Ansible playbook to utilize ansible modules more rather than just running shell commands.
 - Load balancer on top of Prometheus instances - currently each instance has a public IP, not necessary!
-- Another possible solution would be to create ECS cluster, and deploy the web server into containers within the ECS cluster.
+- Rather than provisioning Docker within an EC2 instance, It would maybe be better practice to run prometheus on ECS? Could create an ECS cluster, and deploy the web server and Prometheus into containers within the ECS cluster.
 
 ## Appendix
 ### Rough Design Ideas
