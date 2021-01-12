@@ -22,9 +22,9 @@ Home assignment for OVP DevOps team.
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
 ### Link to Website
-- [ovpdevops web server](https://www.ovpdevops.xyz/)
-- [Prometheus](3.21.97.192:9090)
-- [Grafana](3.21.97.192:3000)
+- [Web server](https://www.ovpdevops.xyz/)
+- Prometheus - subject to change, please request address.
+- Grafana - subject to change, please request address.
 
 **NOTE:** EC2 instances are currently in a stopped state. Please ping me to have them instantiated in order to view the above webpages.
 <br />
