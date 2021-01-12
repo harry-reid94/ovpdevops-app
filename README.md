@@ -21,6 +21,11 @@ Home assignment for OVP DevOps team.
 -  Set of public/private SSH keys
 -	Public certificate for custom domain validated by ACM (AWS Certificate Manager). This is required to receive HTTPS requests.
 
+### Link to Website
+- [www.ovpdevops.xyz](https://www.ovpdevops.xyz/)
+- Prometheus & Grafana - availabile on request (IP address subject to change)
+<br />
+
 ## Proposed Solution
 
 ### Architecture 
@@ -120,3 +125,7 @@ From the output, take your four name servers and upload them to your domain prov
 - Another possible solution would be to create ECS cluster, and deploy the web server into containers within the ECS cluster.
 
 ## Appendix
+### Rough Design Ideas
+![alt text](https://github.com/harry-reid94/ovpdevops-app/blob/main/images/ovpdesignidea.jpg)
+<br />
+![alt text](https://github.com/harry-reid94/ovpdevops-app/blob/main/images/ovpfirstdesignidea.jpg)
